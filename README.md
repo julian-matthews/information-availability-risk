@@ -11,9 +11,13 @@ Here we provide R code and complete trial-by-trial data supporting our study of 
 
 We used a **five-window slot machine with fixed odds** (50% chance of winning) to study how the opportunity to observe non-instrumental information about outcomes influences the decisions to gamble. Critically, we informed participants about which windows would subsequently provide veridical information about the gamble outcome. 
 
+![methods]
+
+## What did you find?
+
 Across three experiments (n=71), we found that non-instrumental information availability has a striking affect on behaviour-increasing the propensity to gamble.
 
-![methods]
+![results]
 
 ## You will need: 
 1. [**R**](https://www.r-project.org/)
@@ -24,5 +28,7 @@ Data-sets are arranged in a systematic manner to aid analysis.
 ![alt_text][avatar]
 
 [methods]: /methods-figure.png
+
+[results]: /information-availability.png
 
 [avatar]: https://avatars0.githubusercontent.com/u/18410581?v=3&s=96 "I'm Julian"
