@@ -50,7 +50,7 @@ For behavioural modeling, we pre-computed information value according to the mod
 7. `mod3_entropy`: information value in model 3
 8. `mod4_res_uncertainty`: information value in model 4
 
-|                                       |           Number   of informative windows                                                                             |
+|                                       |     Number   of informative windows    |              |              |              |              |            |
 |---------------------------------------|:--------------------------------------:|:------------:|:------------:|:------------:|:------------:|:----------:|
 |                 Model                 |                  Zero                  |      One     |      Two     |     Three    |     Four     |    Five    |
 | 1. Baseline                           | 0                                      | 0            | 0            | 0            | 0            | 0          |
