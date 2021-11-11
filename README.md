@@ -51,12 +51,13 @@ For behavioural modeling, we pre-computed information value according to the mod
 8. `mod4_res_uncertainty`: information value in model 4
 
 **Information value** for each of 4 models, computed for each level of non-instrumental information availability
-|---------------------------------------|:--------------------------------------:|:------------:|:------------:|:------------:|:------------:|:----------:|
-|                 Model                 |                  Zero                  |      One     |      Two     |     Three    |     Four     |    Five    |
-| 1. Baseline                           | 0                                      | 0            | 0            | 0            | 0            | 0          |
-| 2. Linear                             | 0                                      | 0.2          | 0.4          | 0.6          | 0.8          | 1.0        |
-| 3. Entropy Reduction                  | 0                                      | 0.104        | 0.228        | 0.392        | 0.625        | 1.0        |
-| 4. Early Resolution of Uncertainty    | 0                                      | 0            | 0            | 0.25         | 0.625        | 1.0        |
+
+| **Model**                             | Zero |  One  |  Two  | Three |  Four | Five |
+|---------------------------------------|:----:|:-----:|:-----:|:-----:|:-----:|:----:|
+| 1. Baseline                           | 0    | 0     | 0     | 0     | 0     | 0    |
+| 2. Linear                             | 0    | 0.2   | 0.4   | 0.6   | 0.8   | 1.0  |
+| 3. Entropy Reduction                  | 0    | 0.104 | 0.228 | 0.392 | 0.625 | 1.0  |
+| 4. Early Resolution of Uncertainty    | 0    | 0     | 0     | 0.25  | 0.625 | 1.0  |
 
 ![alt_text][avatar]
 
