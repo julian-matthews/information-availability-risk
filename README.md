@@ -18,4 +18,4 @@ Here we provide R code and complete trial-by-trial data supporting our study of 
 Data-sets are arranged in a systematic manner to aid analysis.
 
 
-[methods]: ../master/methods-figure.png
+[methods]: /master/methods-figure.png
