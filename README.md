@@ -40,7 +40,7 @@ Behavioural datasets (.csv files) are arranged in a systematic manner to aid ana
 
 ![arrangement]
 
-For behavioural modeling, we pre-computed information value according to the models described in our article. See `information_value_complete.csv`. Note, model 1 is a fixed model including subject-specific intercepts only. Consequently, it is not included in this file.
+For behavioural modeling, we pre-computed information value according to the models described in our article. See `information_value_complete.csv`. Note, model 1 is a fixed model including subject-specific intercepts only. Consequently, it is not included in this file. See values below:
 1. `exp_version`: as above
 2. `subject_num`: as above
 3. `trial_num`: as above
@@ -50,7 +50,7 @@ For behavioural modeling, we pre-computed information value according to the mod
 7. `mod3_entropy`: information value in model 3
 8. `mod4_res_uncertainty`: information value in model 4
 
-|                                       |     Number   of informative windows    |              |              |              |              |            |
+**Information value** for each of 4 models, computed for each level of non-instrumental information availability
 |---------------------------------------|:--------------------------------------:|:------------:|:------------:|:------------:|:------------:|:----------:|
 |                 Model                 |                  Zero                  |      One     |      Two     |     Three    |     Four     |    Five    |
 | 1. Baseline                           | 0                                      | 0            | 0            | 0            | 0            | 0          |
