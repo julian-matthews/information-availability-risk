@@ -74,8 +74,8 @@ See `information_value_complete.csv`. Note, model 1 is a fixed model including s
 
 ![alt_text][avatar]
 
-[methods]: /methods-figure.png
-[results]: /information-availability.png
-[arrangement]: /information-arrangement.png
+[methods]: /figures/methods-figure.png
+[results]: /figures/information-availability.png
+[arrangement]: /figures/information-arrangement.png
 
 [avatar]: https://avatars0.githubusercontent.com/u/18410581?v=3&s=96 "I'm Julian"
