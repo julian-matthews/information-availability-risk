@@ -1,6 +1,6 @@
 # The availability of non-instrumental information increases decision-making under risk.
 
-###### [Julian Matthews](https://twitter.com/quined_quales), [Patrick Cooper](https://twitter.com/neurocoops), Stefan Bode, Trevor Chong
+###### [Julian Matthews](https://twitter.com/quined_quales), [Patrick Cooper](https://twitter.com/neurocoops), [Stefan Bode](https://dlab.unimelb.edu.au/), [Trevor Chong](http://cogneuro.com.au/)
 
 ***
 
