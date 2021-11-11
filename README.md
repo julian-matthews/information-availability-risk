@@ -15,7 +15,7 @@ We used a **five-window slot machine with fixed odds** (50% chance of winning) t
 
 ## What did you find?
 
-Across three experiments (n=71), we found that non-instrumental information availability has a striking affect on behaviour-increasing the propensity to gamble.
+Across three experiments (n=71), we found that information availability has a striking affect on behaviour; **the opportunity to receive non-instrumental information increases the propensity to gamble**. However, it does not do so in a simple, linear fashion. We used computational modeling to demonstrate that choices were driven by anticipatory utility. When information might provide a definitive outcome participants were more inclined to gamble. However, when only partial information was available, participants were more inclined to reject the gamble (even less than a condition were no information was available at all, a speculative effect of **information avoidance**).
 
 ![results]
 
@@ -23,7 +23,16 @@ Across three experiments (n=71), we found that non-instrumental information avai
 1. [**R**](https://www.r-project.org/)
 
 ## Data description
-Data-sets are arranged in a systematic manner to aid analysis.
+Data-sets are arranged in a systematic manner to aid analysis. Here, I will refer to the file `all_responses.csv`
+1. `exp_version`: the experiment in our study; EXP1, EXP2, or EXP3
+2. `subject_num`: the unique ID for each of 71 participant across out experiments
+3. `trial_num`: the trial number from 1 to 180
+4. `information`: non-instrumental information availability, reflected in the number of slots with veridical information from 0 to 5
+5. `stake`: the amount of money that can be won or lost on the trial. Fixed at 50 cents for EXP1. Varies from 10 to 50 cents (in 10 cent increments) for EXP2 and EXP3.
+6. `decision`: whether the gamble was accepted (1) or rejected (0). Coded (NA) if no response was made within the 5 second response window.
+7. `reaction_time`: the amount of time it took to make a decision
+8. `outcome`: the predetermined outcome of the gamble (if the participants chooses to accept)
+9. `early_late`: in EXP3 only, whether information was available at the earliest or latest opportunity (analysed for information levels 1:4)
 
 ![alt_text][avatar]
 
