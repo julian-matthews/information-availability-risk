@@ -36,6 +36,10 @@ Behavioural datasets (.csv files) are arranged in a systematic manner to aid ana
 8. `outcome`: the predetermined outcome of the gamble (if the participants chooses to accept)
 9. `early_late`: in EXP3 only, whether information was available at the earliest or latest opportunity (analysed for information levels 1:4)
 
+> Informative windows (black) display non-instrumental information that signals the outcome of the trial. Non-informative windows (white) display a random cue. All experiments had identical numbers of trials per information condition, the difference between Experiments 1 and 2 vs. Experiment 3 was the arrangement of informative windows. In Experiments 1 and 2, arrangements were randomly selected from the options in the top panel. In Experiment 3, window arrangements were composed of the options in the bottom panel. Importantly, for the partial information conditions in Experiment 3 (1 to 4 informative windows), informative windows appeared relatively early or relatively late in the trial. An equal proportion of earlier and later arrangements were used.
+
+![arrangement]
+
 For behavioural modeling, we pre-computed information value according to the models described in our article. See `information_value_complete.csv`. Note, model 1 is a fixed model including subject-specific intercepts only. Consequently, it is not included in this file.
 1. `exp_version`: as above
 2. `subject_num`: as above
@@ -46,10 +50,18 @@ For behavioural modeling, we pre-computed information value according to the mod
 7. `mod3_entropy`: information value in model 3
 8. `mod4_res_uncertainty`: information value in model 4
 
+|                                       |           Number   of informative windows                                                                             |
+|---------------------------------------|:--------------------------------------:|:------------:|:------------:|:------------:|:------------:|:----------:|
+|                 Model                 |                  Zero                  |      One     |      Two     |     Three    |     Four     |    Five    |
+| 1. Baseline                           | 0                                      | 0            | 0            | 0            | 0            | 0          |
+| 2. Linear                             | 0                                      | 0.2          | 0.4          | 0.6          | 0.8          | 1.0        |
+| 3. Entropy Reduction                  | 0                                      | 0.104        | 0.228        | 0.392        | 0.625        | 1.0        |
+| 4. Early Resolution of Uncertainty    | 0                                      | 0            | 0            | 0.25         | 0.625        | 1.0        |
+
 ![alt_text][avatar]
 
 [methods]: /methods-figure.png
-
 [results]: /information-availability.png
+[arrangement]: /information-arrangement.png
 
 [avatar]: https://avatars0.githubusercontent.com/u/18410581?v=3&s=96 "I'm Julian"
