@@ -7,7 +7,7 @@
 > Contemporary models of decision-making under risk focus on estimating the final value of each alternative course of action. According to such frameworks, information that has no capacity to alter a future payoff (i.e., is ‘non-instrumental’) should have little effect on one’s preference for risk. Importantly, however, recent work has shown that information, despite being non-instrumental, may nevertheless exert a striking influence on behavior. Here, we tested whether the opportunity to passively observe the sequence of events following a decision could modulate risky behavior, even if that information could not possibly influence the final result. Across three experiments, 71 individuals chose to accept or reject gambles on a five-window slot machine. If a gamble was accepted, each window was sequentially revealed prior to the outcome being declared. Critically, we informed participants about which windows would subsequently provide veridical information about the gamble outcome, should that gamble be accepted. Our analyses revealed three key findings. First, the opportunity to observe the consequences of one’s choice significantly increased the likelihood of gambling, despite that information being entirely non-instrumental. Second, this effect generalized across different stakes. Finally, choices were driven by the likelihood that the available information could result in an earlier resolution of uncertainty. These findings demonstrate the capacity of non-instrumental information to modulate economic decisions through its anticipatory utility. More broadly, our result provides a counterpoint to current decision-making frameworks, by demonstrating that information that is entirely orthogonal to the value of the final outcome can have substantial effects on risky behavior.
 
 ## What is this?
-Here we provide R code and complete trial-by-trial data supporting our study of non-instrumental information availability and risky decision-making. 
+Here we provide **R code and complete trial-by-trial data** supporting our study of non-instrumental information availability and risky decision-making. 
 
 We used a **five-window slot machine with fixed odds** (50% chance of winning) to study how the opportunity to observe non-instrumental information about outcomes influences the decisions to gamble. Critically, we informed participants about which windows would subsequently provide veridical information about the gamble outcome. 
 
@@ -15,7 +15,9 @@ We used a **five-window slot machine with fixed odds** (50% chance of winning) t
 
 ## What did you find?
 
-Across three experiments (n=71), we found that information availability has a striking affect on behaviour; **the opportunity to receive non-instrumental information increases the propensity to gamble**. However, it does not do so in a simple, linear fashion. We used computational modeling to demonstrate that choices were driven by anticipatory utility. When information might provide a definitive outcome participants were more inclined to gamble. However, when only partial information was available, participants were more inclined to reject the gamble (even less than a condition were no information was available at all, a speculative effect of **information avoidance**).
+Across three experiments (n=71), we found that information availability has a striking affect on behaviour; **the opportunity to receive non-instrumental information increases the propensity to gamble**. 
+
+However, it does not do so in a simple, linear fashion. We used computational modeling to demonstrate that choices were driven by anticipatory utility. When information might provide a definitive outcome participants were more inclined to gamble. However, when only partial information was available, participants were more inclined to reject the gamble (even less than a condition were no information was available at all, a speculative effect of **information avoidance**).
 
 ![results]
 
@@ -23,7 +25,7 @@ Across three experiments (n=71), we found that information availability has a st
 1. [**R**](https://www.r-project.org/)
 
 ## Data description
-Data-sets are arranged in a systematic manner to aid analysis. Here, I will refer to the file `all_responses.csv`
+Behavioural datasets (.csv files) are arranged in a systematic manner to aid analysis:
 1. `exp_version`: the experiment in our study; EXP1, EXP2, or EXP3
 2. `subject_num`: the unique ID for each of 71 participant across out experiments
 3. `trial_num`: the trial number from 1 to 180
@@ -33,6 +35,16 @@ Data-sets are arranged in a systematic manner to aid analysis. Here, I will refe
 7. `reaction_time`: the amount of time it took to make a decision
 8. `outcome`: the predetermined outcome of the gamble (if the participants chooses to accept)
 9. `early_late`: in EXP3 only, whether information was available at the earliest or latest opportunity (analysed for information levels 1:4)
+
+For behavioural modeling, we pre-computed information value according to the models described in our article. See `information_value_complete.csv`. Note, model 1 is a fixed model including subject-specific intercepts only. Consequently, it is not included in this file.
+1. `exp_version`: as above
+2. `subject_num`: as above
+3. `trial_num`: as above
+4. `information`: as above
+5. `decision`: as above
+6. `mod2_linear`: information value in model 2
+7. `mod3_entropy`: information value in model 3
+8. `mod4_res_uncertainty`: information value in model 4
 
 ![alt_text][avatar]
 
