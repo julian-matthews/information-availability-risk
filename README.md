@@ -9,7 +9,7 @@
 ## What is this?
 Here we provide **R code and complete trial-by-trial data** supporting our study of non-instrumental information availability and risky decision-making. 
 
-We used a **five-window slot machine with fixed odds** (50% chance of winning) to study how the opportunity to observe non-instrumental information about outcomes influences the decisions to gamble. Critically, we informed participants about which windows would subsequently provide veridical information about the gamble outcome. 
+We used a **five-window slot machine with fixed odds** (50% chance of winning) to study how the opportunity to observe non-instrumental information about outcomes influences decisions to gamble. Critically, we informed participants about which slots would subsequently provide veridical information about the gamble outcome. 
 
 ![methods]
 
@@ -25,6 +25,14 @@ However, it does not do so in a simple, linear fashion. We used computational mo
 
 ## You will need: 
 1. [**R**](https://www.r-project.org/)
+
+## Code description
+* `exp1_stats.R`: statistics for Experiment 1
+* `exp2_stats.R`: statistics for Experiment 2
+* `exp3_stats.R`: statistics for Experiment 3
+* `group_stats.R`: pooled statistics including data from all experiments
+* `information-model-comparison.R`: model comparison and boostrap simulations
+* `PNAS_figure.R`: code to produce Figure 2 from our submission to PNAS
 
 ## Data description
 
