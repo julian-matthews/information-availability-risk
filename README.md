@@ -64,7 +64,7 @@ For behavioural modeling, We compared four different generalised mixed models to
 | 3. Entropy Reduction                  | 0    | 0.104 | 0.228 | 0.392 | 0.625 | 1.0  |
 | 4. Early Resolution of Uncertainty    | 0    | 0     | 0     | 0.25  | 0.625 | 1.0  |
 
-See `information_value_complete.csv`. Note, model 1 is a fixed model including subject-specific intercepts only. Consequently, it is not included in this file. See values below:
+See [`information_value_complete.csv`](./data/information_value_complete.csv). Note, model 1 is a fixed model including subject-specific intercepts only. Consequently, it is not included in this file. See values below:
 1. `exp_version`: as above
 2. `subject_num`: as above
 3. `trial_num`: as above
