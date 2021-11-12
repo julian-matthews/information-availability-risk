@@ -29,12 +29,12 @@ However, information availability does not drive behaviour in a simple, linear f
 1. [**R**](https://www.r-project.org/)
 
 ## Code description
-* `exp1_stats.R`: statistics for Experiment 1
-* `exp2_stats.R`: statistics for Experiment 2
-* `exp3_stats.R`: statistics for Experiment 3
-* `group_stats.R`: pooled statistics including data from all experiments
-* `information-model-comparison.R`: model comparison and boostrap simulations
-* `PNAS_figure.R`: code to produce Figure 2 from our submission to PNAS
+* [`exp1_stats.R`](./code/exp1_stats.R): statistics for Experiment 1
+* [`exp2_stats.R`](./code/exp2_stats.R): statistics for Experiment 2
+* [`exp3_stats.R`](./code/exp3_stats.R): statistics for Experiment 3
+* [`group_stats.R`](./code/group_stats.R): pooled statistics including data from all experiments
+* [`information-model-comparison.R`](./code/information-model-comparison.R): model comparison and boostrap simulations
+* [`PNAS_figure.R`](./code/PNAS_figure.R): code to produce Figure 2 from our submission to PNAS
 
 ## Data description
 
