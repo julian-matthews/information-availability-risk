@@ -17,7 +17,9 @@ We used a **five-window slot machine with fixed odds** (50% chance of winning) t
 
 Across three experiments (n=71), we found that information availability has a striking affect on behaviour; **the opportunity to receive non-instrumental information increases the propensity to gamble**. 
 
-However, it does not do so in a simple, linear fashion. We used computational modeling to demonstrate that choices were driven by anticipatory utility. When information might provide a definitive outcome participants were more inclined to gamble. However, when only partial information was available, participants were more inclined to reject the gamble (even less than a condition were no information was available at all, a speculative effect of **information avoidance**).
+However, information availability does not drive behaviour in a simple, linear fashion. We used computational modeling to demonstrate that choices were driven by anticipatory utility. When information might provide a definitive outcome, participants were more inclined to gamble. However, when only partial information was available, participants were more inclined to reject the gamble. In fact, participants were less likely to accept gambles with partial information than a condition where no information was available at all, an effect that can be interpreted as **information avoidance**.
+
+The following plot illustrates the proportion of gambles accepted (**Pr(Accept)**) as a function of non-instrumental information availability (**Informative windows**). Group means for each information condition are plotted as black squares. Errorbars reflect 95% confidence intervals. Individual subject means are plotted in grey for each information condition and experiment. 
 
 ![results]
 
@@ -39,14 +41,14 @@ However, it does not do so in a simple, linear fashion. We used computational mo
 ### Behavioural data
 Behavioural datasets (.csv files) are arranged in a systematic manner to aid analysis:
 1. `exp_version`: the experiment in our study; EXP1, EXP2, or EXP3
-2. `subject_num`: the unique ID for each of 71 participant across out experiments
+2. `subject_num`: the unique ID for each of 71 participant across our experiments
 3. `trial_num`: the trial number from 1 to 180
 4. `information`: non-instrumental information availability, reflected in the number of slots with veridical information from 0 to 5
 5. `stake`: the amount of money that can be won or lost on the trial. Fixed at 50 cents for EXP1. Varies from 10 to 50 cents (in 10 cent increments) for EXP2 and EXP3.
 6. `decision`: whether the gamble was accepted (1) or rejected (0). Coded (NA) if no response was made within the 5 second response window.
 7. `reaction_time`: the amount of time it took to make a decision
-8. `outcome`: the predetermined outcome of the gamble (if the participants chooses to accept)
-9. `early_late`: in EXP3 only, whether information was available at the earliest or latest opportunity (analysed for information levels 1:4)
+8. `outcome`: the predetermined outcome of the gamble (assuming the participant chooses to accept)
+9. `early_late`: EXP3 only, whether information was available at the earliest or latest opportunity (analysed for information levels 1:4)
 
 > Informative windows (black) display non-instrumental information that signals the outcome of the trial. Non-informative windows (white) display a random cue. All experiments had identical numbers of trials per information condition, the difference between Experiments 1 and 2 vs. Experiment 3 was the arrangement of informative windows. In Experiments 1 and 2, arrangements were randomly selected from the options in the top panel. In Experiment 3, window arrangements were composed of the options in the bottom panel. Importantly, for the partial information conditions in Experiment 3 (1 to 4 informative windows), informative windows appeared relatively early or relatively late in the trial. An equal proportion of earlier and later arrangements were used.
 
