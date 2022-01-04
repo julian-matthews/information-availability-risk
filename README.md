@@ -1,4 +1,4 @@
-# The availability of non-instrumental information increases decision-making under risk.
+# The availability of non-instrumental information increases risky decision-making.
 
 ###### [Julian Matthews](https://twitter.com/quined_quales), [Patrick Cooper](https://twitter.com/neurocoops), [Stefan Bode](https://dlab.unimelb.edu.au/), [Trevor Chong](http://cogneuro.com.au/)
 
