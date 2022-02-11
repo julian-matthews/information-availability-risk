@@ -17,7 +17,7 @@ We used a **five-window slot machine with fixed odds** (50% chance of winning) t
 
 Across three experiments (n=71), we found that information availability has a striking affect on behaviour; **the opportunity to receive non-instrumental information increases the propensity to gamble**. 
 
-However, information availability does not drive behaviour in a simple, linear fashion. We used computational modeling to demonstrate that choices were driven by anticipatory utility. When information might provide a definitive outcome, participants were more inclined to gamble. However, when only partial information was available, participants were more inclined to reject the gamble. In fact, participants were less likely to accept gambles with partial information than a condition where no information was available at all, an effect that can be interpreted as **information avoidance**.
+However, information availability does not drive behaviour in a simple, linear fashion. We used computational modeling to demonstrate that choices were likely driven by anticipatory utility. When information might provide a definitive outcome, participants were more inclined to gamble. However, when only partial information was available, participants were more inclined to reject the gamble. In fact, participants were less likely to accept gambles with partial information than a condition where no information was available at all, an effect that can be interpreted as **information avoidance**.
 
 > The following plot illustrates the proportion of gambles accepted (**Pr(Accept)**) as a function of non-instrumental information availability (**Informative windows**). Group means for each information condition are plotted as black squares. Errorbars reflect 95% confidence intervals. Individual subject means are plotted in grey for each information condition and experiment. 
 
@@ -33,7 +33,7 @@ However, information availability does not drive behaviour in a simple, linear f
 * [`exp2_stats.R`](./code/exp2_stats.R): statistics for Experiment 2
 * [`exp3_stats.R`](./code/exp3_stats.R): statistics for Experiment 3
 * [`group_stats.R`](./code/group_stats.R): pooled statistics including data from all experiments
-* [`information-model-comparison.R`](./code/information-model-comparison.R): model comparison and boostrap simulations
+* [`information-model-comparison.R`](./code/information-model-comparison.R): model comparison and bootstrap simulations
 * [`manuscript_figures.R`](./code/manuscript_figures.R): code to produce figures from our paper
 
 ## Data description
