@@ -9,7 +9,7 @@
 ## What is this?
 Here we provide **[R code](./code/analysis/)** and **[complete trial-by-trial data](./data/)** supporting our study of non-instrumental information availability and risky decision-making. 
 
-The **[MATLAB code](./code/experiment/)** used to conduct each experiment has also been made available under a GNUv3.0 license. Each experiment can be initiated using its `runExp_` function. Supporting functions, images, and audio are included in the `addons` folder.
+The **[MATLAB code](./code/experiments/)** used to conduct each experiment has also been made available under a GNUv3.0 license. Each experiment can be initiated using its `runExp_` function. Supporting functions, images, and audio are included in the `addons` folder.
 
 We used a **five-window slot machine with fixed odds** (50% chance of winning) to study how the opportunity to observe non-instrumental information about outcomes influences decisions to gamble. Critically, we informed participants about which slots would subsequently provide veridical information about the gamble outcome. 
 
