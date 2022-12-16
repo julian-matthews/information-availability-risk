@@ -58,10 +58,15 @@ int_mod <- glmer(
 
 Anova(int_mod, type = "II", test.statistic = "Chisq")
 
-# exp2
+# exp2 (included only)
 # information         chi-squared(5)=243.074, p<.001 ***
 # stake               chi-squared(4)=153.161, p<.001 ***
 # information:stake   chi-squared(20)=19.873, p=.466
+
+# exp2 (all participants)
+# information         chi-squared(5)=232.362, p<.001 ***
+# stake               chi-squared(4)=143.831, p<.001 ***
+# information:stake   chi-squared(20)=20.506, p=.427
 
 # Information post-hocs
 cht <- glht(int_mod, linfct = mcp(information = "Tukey"))
@@ -94,6 +99,21 @@ summarySE(data = behdat,
 # Three / Five      z=4.116, p<.001 
 # Four / Five       z=-0.606, p=.545 
 
+# Means and within-subject SEMS
+
+sumdat <- exp2 %>% group_by(information,subject_num) %>% dplyr::summarise(decision=mean(decision,na.rm=TRUE))
+sumdat <- Rmisc::summarySEwithin(data = sumdat, 
+                                 measurevar = "decision",
+                                 idvar = "subject_num",
+                                 withinvars = "information")
+
+# None:   M=.605, SEM=.027
+# One:    M=.534, SEM=.031
+# Two:    M=.560, SEM=.018
+# Three:  M=.689, SEM=.024
+# Four:   M=.788, SEM=.022
+# Five:   M=.779, SEM=.025
+
 # Sanity check with emmeans
 tests <- emmeans(int_mod, list(pairwise ~ stake), 
                  adjust = "Holm", type = "response")
@@ -111,20 +131,34 @@ summarySE(data = behdat,
 # 10 cents / 50 cents      z=-8.102, p<.001 
 # 20 cents / 30 cents      z=-4.390, p<.001 
 # 20 cents / 40 cents      z=-8.490, p<.001 
-# 20 cents / 50 cents      z=-6.327m p<.001 
+# 20 cents / 50 cents      z=-6.327, p<.001 
 # 30 cents / 40 cents      z=-4.190, p<.001 
 # 30 cents / 50 cents      z=-1.935, p=.106 
 # 40 cents / 50 cents      z=2.302, p=.064
+
+sumdat <- exp2 %>% group_by(stake,subject_num) %>% dplyr::summarise(decision=mean(decision,na.rm=TRUE))
+sumdat <- Rmisc::summarySEwithin(data = sumdat, 
+                                 measurevar = "decision",
+                                 idvar = "subject_num",
+                                 withinvars = "stake")
+
+# Included participants only
+# 10 cents:   M=.765, SEM=.051
+# 20 cents:   M=.729, SEM=.038
+# 30 cents:   M=.640, SEM=.026
+# 40 cents:   M=.555, SEM=.040
+# 50 cents:   M=.606, SEM=.042
 
 # Frequentist tests
 
 behdat <- exp2
 
+behdat$subject_num <- factor(behdat$subject_num)
 subjdat <- behdat %>% group_by(subject_num,information,stake) %>% 
   dplyr::summarise(decision = mean(decision,na.rm = TRUE))
 
 # Balanced design
-table(subjdat$information)
+table(subjdat$information,subjdat$stake)
 
 # Perform frequentist repeated measures ANOVA
 rm_anova <- ezANOVA(data = subjdat,
@@ -136,9 +170,15 @@ rm_anova <- ezANOVA(data = subjdat,
 
 rm_anova$ANOVA
 
+# Included pps only
 # information         F(5,140)=19.870, p<.001, ges=.110
 # stake               F(4,112)=4.714, p=.001, ges=.069
 # information:stake   F(20,560)=1.608, p=.046, ges=.013
+
+# Everybody
+# information         F(5,160)=17.621, p<.001, ges=.084
+# stake               F(4,128)=4.465, p=.002, ges=.051
+# information:stake   F(20,640)=1.603, p=.046, ges=.009
 
 bf <- anovaBF(
   data = subjdat,
@@ -154,7 +194,12 @@ bf <- anovaBF(
 options(scipen = 0)
 bayesfactor_inclusion(models = bf, match_models = TRUE)
 
+# Included pps only
 # information         BF=6.609 x 10^19
 # stake               BF=1.815 x 10^11
 # information:stake   BF=4.122 x 10^-5
 
+# Everybody
+# information         BF=3.13 x 10^18
+# stake               BF=1.37 x 10^10
+# information:stake   BF=2.18 x 10^-5

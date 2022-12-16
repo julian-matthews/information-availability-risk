@@ -1,7 +1,6 @@
 ## MODEL COMPARISON
 
-$dat_location <- ''
-$fig_location <- ''
+dat_location <- ''
 
 setwd(dat_location)
 alldata <- read.csv(file = "information_value_complete.csv")
@@ -9,7 +8,6 @@ alldata <- read.csv(file = "information_value_complete.csv")
 # BUILD MODELS ----
 
 library(lmerTest)
-library(boot)
 
 tmp <- alldata
 
@@ -41,7 +39,7 @@ model2 <- glmer(
 
 # Entropy model
 model3 <- glmer(
-  decision ~ tmp$mod3_entropy + (1 | subject_num),
+  decision ~ mod3_entropy + (1 | subject_num),
   data = tmp,
   family = binomial(link = 'logit'),
   control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,
@@ -59,7 +57,7 @@ model4 <- glmer(
                                         starttests = FALSE, kkt = FALSE))
 )
 
-# Entropy reduction model
+# Early resolution model
 winning_mod <- glm(
   decision ~ mod4_res_uncertainty + 1,
   data = tmp,
@@ -77,11 +75,26 @@ tmp2$labels <- factor(c("model1","model2","model3","model4"),
                       levels = c("model1","model2","model3","model4"),
                       labels = c("1","2","3","4"))
 
-model_fits1 <- tmp1[order(-tmp1$AIC),]
-model_fits2 <- tmp2[order(-tmp2$BIC),]
+model_fits <- tmp1[order(-tmp1$AIC),]
+#model_fits <- tmp2[order(-tmp2$BIC),]
 
 # TEST GOODNESS OF FIT ----
 
+library(boot)
+
 # Takes ~8 minutes to perform 1000 simulations: CI [1.065,1.384]
-model4_boots <- bootMer(model4, FUN = fixef, nsim = 1000, verbose = TRUE)
-boot.ci(conf = 0.99, model4_boots, index = 2, type = "perc")
+# model4_boots <- bootMer(model4, FUN = fixef, nsim = 1000, verbose = TRUE)
+# boot.ci(conf = 0.99, model4_boots, index = 2, type = "perc")
+
+# MAXIMAL APPROACH ----
+
+max_model <- glmer(
+  decision ~ mod2_linear +  mod3_entropy + mod4_res_uncertainty + (1 | subject_num),
+  data = tmp,
+  family = binomial(link = 'logit'),
+  control = glmerControl(optimizer = "optimx", calc.derivs = FALSE,
+                         optCtrl = list(method = "nlminb", 
+                                        starttests = FALSE, kkt = FALSE))
+)
+
+drop1(max_model, test = "Chisq")

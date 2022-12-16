@@ -2,6 +2,9 @@
 # PRELIMINARIES ----
 # Load packages and data
 
+# Clean the environment
+rm(list=ls())
+
 library(ggplot2)
 library(ggbeeswarm)
 library(Rmisc)
@@ -12,15 +15,20 @@ $dat_location <- ''
 $fig_location <- ''
 
 setwd(dat_location)
-exp1 <- read.csv(file = 'data_exp1.csv', na.strings = '99')
-exp2 <- read.csv(file = 'data_exp2.csv', na.strings = '99')
-exp3 <- read.csv(file = 'data_exp3.csv', na.strings = '99')
-alldata <- read.csv(file = "all_experiments.csv")
+exp1 <- read.csv(file = 'data_exp1.csv', na.strings = '99') # Information only
+exp2 <- read.csv(file = 'data_exp2.csv', na.strings = '99') # Information & stake
+exp3 <- read.csv(file = 'data_exp3.csv', na.strings = '99') # Early vs. late
+alldata <- read.csv(file = 'all_responses.csv')
 
 # Setup plot hex-colours
 info_colour <- "#ffaf7a" # A pleasant orange
 stake_colour <- "#59bfff" # A pleasant blue
-colour_blind_friendly = c("#005ab5","#dc3535") # Distinctive blue & red
+colour_blind_friendly = c("#225ea8","#dc3535") # Distinctive blue & red
+
+# Setup exp version shapes
+exp1_shape <- 2
+exp2_shape <- 19
+exp3_shape <- 0
 
 # FACTOR NAMING ----
 
@@ -69,9 +77,7 @@ exp2$stake <-
       "30 cents",
       "40 cents",
       "50 cents"
-    ),
-    labels = c("10","20","30","40","50")
-  )
+    ))
 
 exp2$stake <- as.ordered(exp2$stake)
 
@@ -95,7 +101,7 @@ exp3$early_late <-
   factor(
     exp3$early_late,
     levels = c("early", "late"),
-    labels = c("Early", "Late")
+    labels = c("Earlier", "Later")
   )
 
 exp3$information <- as.ordered(exp3$information)
@@ -109,9 +115,7 @@ exp3$stake <-
       "30 cents",
       "40 cents",
       "50 cents"
-    ),
-    labels = c("10","20","30","40","50")
-  )
+    ))
 
 exp3$stake <- as.ordered(exp3$stake)
 
@@ -195,11 +199,16 @@ g_legend<-function(a.gplot){
 
 # EXPERIMENT 1 ----
 
+exp1_group <- exp1 %>% 
+  group_by(information,subject_num) %>% 
+  summarise(decision = mean(decision, na.rm = TRUE))
+
 # Compute confidence intervals
-groupdat <- summarySE(
-  data = exp1,
+groupdat <- summarySEwithin(
+  data = exp1_group,
   measurevar = "decision",
-  groupvars = "information",
+  idvar = "subject_num",
+  withinvars = "information",
   na.rm = TRUE,
   .drop = FALSE
 )
@@ -210,23 +219,29 @@ subjdat <- exp1 %>% group_by(subject_num,information,.drop = TRUE) %>%
 
 p1 <- ggplot(data = groupdat, aes(x = information, y = decision)) + 
   geom_violin(data = subjdat, fill = info_colour, size = 0, alpha = 0.15, adjust = 0.9) +
-  geom_beeswarm(data = subjdat, size = 0.5, colour = "lightgrey") +
-  geom_errorbar(aes(ymin = decision - ci, ymax = decision + ci), 
-                width = 0, size = 2, alpha = 0.85,
-                colour = info_colour) +
-  geom_line(aes(group = "information"), size = 1, colour = info_colour, stat = "identity") +
-  geom_point(size = 2, shape = 15, colour = "black")
+  geom_beeswarm(data = subjdat, shape = exp1_shape, size = 0.5, colour = "lightgrey") +
+  geom_line(aes(group = "information"), size = 1.5, colour = info_colour, stat = "identity") +
+  geom_errorbar(aes(ymin = decision - se, ymax = decision + se), 
+                width = 0, size = 1, alpha = 0.85,
+                colour = "black")
+  # geom_point(size = 2, shape = 15, colour = "black")
 
 info_exp1 <- p1 + theme_julian() + ylim(-0.01,1.01)
 
 # EXPERIMENT 2 ----
 
 ## INFORMATION
+
+exp2_group <- exp2 %>% 
+  group_by(information,subject_num) %>% 
+  summarise(decision = mean(decision, na.rm = TRUE))
+
 # Compute confidence intervals
-groupdat <- summarySE(
-  data = exp2,
+groupdat <- summarySEwithin(
+  data = exp2_group,
   measurevar = "decision",
-  groupvars = "information",
+  idvar = "subject_num",
+  withinvars = "information",
   na.rm = TRUE,
   .drop = FALSE
 )
@@ -237,95 +252,81 @@ subjdat <- exp2 %>% group_by(subject_num,information,.drop = TRUE) %>%
 
 p2 <- ggplot(data = groupdat, aes(x = information, y = decision)) + 
   geom_violin(data = subjdat, fill = info_colour, size = 0, alpha = 0.15, adjust = 0.9) +
-  geom_beeswarm(data = subjdat, size = 0.5, colour = "lightgrey") +
-  geom_errorbar(aes(ymin = decision - ci, ymax = decision + ci), 
-                width = 0, size = 2, alpha = 0.85,
-                colour = info_colour) +
-  geom_line(aes(group = "information"), size = 1, colour = info_colour, stat = "identity") +
-  geom_point(size = 2, shape = 15, colour = "black")
+  geom_beeswarm(data = subjdat, shape = exp2_shape, size = 0.5, colour = "lightgrey") +
+  geom_line(aes(group = "information"), size = 1.5, colour = info_colour, stat = "identity") +
+  geom_errorbar(aes(ymin = decision - se, ymax = decision + se), 
+                width = 0, size = 1, alpha = 0.85,
+                colour = "black")
+  # geom_point(size = 2, shape = 15, colour = "black")
 
 info_exp2 <- p2 + theme_julian() + ylim(-0.01,1.01)
 
-## STAKE
-# Compute confidence intervals
-groupdat <- summarySE(
-  data = exp2,
-  measurevar = "decision",
-  groupvars = "stake",
-  na.rm = TRUE,
-  .drop = FALSE
-)
-
-# Summarise data for each individual
-subjdat <- exp2 %>% group_by(subject_num,stake,.drop = TRUE) %>% 
-  dplyr::summarise(decision = mean(decision, na.rm = TRUE))
-
-p3 <- ggplot(data = groupdat, aes(x = stake, y = decision)) + 
-  geom_violin(data = subjdat, fill = stake_colour, size = 0, alpha = 0.15, adjust = 0.9) +
-  geom_beeswarm(data = subjdat, size = 0.5, colour = "lightgrey") +
-  geom_errorbar(aes(ymin = decision - ci, ymax = decision + ci), 
-                width = 0, size = 2, alpha = 0.85,
-                colour = stake_colour) +
-  geom_line(aes(group = "stake"), size = 1, colour = stake_colour, stat = "identity") +
-  geom_point(size = 2, shape = 15, colour = "black")
-
-stake_exp2 <- p3 + theme_julian() + ylim(-0.01,1.01)
-
 # Null interaction of information and stake
 
-groupdat <- summarySE(
-  data = exp2,
+exp2_interaction <- exp2 %>% 
+  group_by(information,stake,subject_num) %>% 
+  summarise(decision = mean(decision, na.rm = TRUE))
+
+groupdat <- summarySEwithin(
+  data = exp2_interaction,
   measurevar = "decision",
-  groupvars = c("information","stake"),
+  idvar = "subject_num",
+  withinvars = c("information","stake"),
   na.rm = TRUE,
   .drop = FALSE
 )
 
-groupdat$ci <- as.character(round(groupdat$ci,digits=2))
-groupdat$ci <- paste("±",groupdat$ci,sep="")
-
-inter_exp2 <- ggplot(groupdat, aes(x = stake, y = information)) + geom_raster(aes(fill = decision)) +
-  scale_fill_gradient(low = "#f7f7f7", high = "#67a9cf", # colorblind/printer friendly
-                       limit = c(0.4,0.9)) +
-  #theme_linedraw() + 
-  geom_text(aes(label = round(decision,digits=2)),colour="grey47",size=3.5) +
-  geom_text(aes(label = ci),colour="grey47",size=2.5,nudge_y=-0.25)+
-  theme(
-    legend.position = "right"
-  ) + xlab("Stake") + ylab("Informative windows") +
-  labs(fill = "Pr(Accept)") +
-  theme_classic() +
-  scale_shape_manual(values = c(16,1)) +
-  theme(
-    axis.line = element_blank(),
-    panel.border = element_rect(colour = "grey", fill = NA, size = 0.5),
-    axis.ticks = element_line(colour = "grey"),
-    panel.grid = element_blank(),
-    axis.title = element_text(face = "bold", size = 12),
-    axis.text = element_text(face = "plain", size = 12, colour = "black"),
-    legend.position = "none",
+width_size = 0.25
+inter_exp2 <- ggplot(groupdat,aes(x = information, y = decision, colour = stake)) +
+  geom_line(aes(group = stake), 
+            position = position_dodge(width = width_size)) +
+  geom_errorbar(aes(ymin = decision-se, ymax = decision+se),
+                width = 0, size = 1.5,
+                position = position_dodge(width = width_size)) +
+  geom_point(position = position_dodge(width = width_size),
+             shape = 22, stroke = 0, fill = "white", size = 1.5, show.legend = FALSE) +
+  labs(colour = "Stake",
+       x = "Informative windows", y = "Pr(Accept)") +
+  scale_y_continuous(limits = c(0.35, 0.95), 
+                     breaks = seq(0.4,0.9,0.1)) +
+  theme_julian() + theme(
+    legend.text = element_text(size=10, face = "plain"),
+    legend.title = element_text(size=10, face = "bold")
   )
+
+inter_exp2 <- inter_exp2 + theme(legend.position = c(0.8,0.2))
 
 # EXPERIMENT 3 ----
 
 ## INFORMATION
 
+## Early vs. Late split
 # Compute confidence intervals for info 1:4
 tmp1 <- exp3 %>% dplyr::filter(exp3$information %in% c("One","Two","Three","Four"))
 tmp2 <- exp3 %>% dplyr::filter(exp3$information %in% c("None","Five"))
 
-early_late_data <- summarySE(
-  data = tmp1,
-  measurevar = "decision",
-  groupvars = c("information","early_late"),
+early_late_group <- tmp1 %>% 
+  group_by(information,early_late,subject_num) %>% 
+  summarise(decision = mean(decision, na.rm = TRUE))
+
+early_late_data <- summarySEwithin(
+  data = early_late_group,
+  measurevar = "decision", 
+  idvar = "subject_num",
+  withinvars = c("information","early_late"),
   na.rm = TRUE,
   .drop = FALSE
 )
 
-other_data <- summarySE(
-  data = tmp2,
+other_group <- tmp2 %>% 
+  group_by(information,subject_num) %>% 
+  summarise(decision = mean(decision, na.rm = TRUE))
+
+other_data <- summarySEwithin(
+  data = other_group,
   measurevar = "decision",
-  groupvars = "information",
+  idvar = "subject_num",
+  withinvars = "information",
   na.rm = TRUE,
   .drop = FALSE
 )
@@ -333,7 +334,7 @@ other_data <- summarySE(
 # Add fake data to tmp2 to adjust size of plot
 fake_data_to_make_plot <- data.frame(information = rep(c("One","Two","Three","Four"),600), decision = rep(0.6,600*4),
                                      exp_version = "EL", 
-                                     subject_num = as.factor(rep(levels(exp3$subject_num),30)), 
+                                     subject_num = as.factor(rep(levels(factor(exp3$subject_num)),30)), 
                                      trial_num = NA, 
                                      stake = NA, reaction_time = NA, outcome = NA, previous_outcome = NA, 
                                      previous = NA, known = NA, could_know = NA, early_late = NA, knowable = NA)
@@ -357,151 +358,124 @@ p4 <- ggplot(data = early_late_data, aes(x = information, y = decision)) +
                     size = 0, alpha = 0.35, adjust = 1.5, width = 1.2, scale = "area") +
   geom_tile(data = data.frame(information = c(2,3,4,5), decision = c(0.5,0.5,0.5,0.5)), width = 0.075, fill = "white") +
   geom_beeswarm(data = splitdat, aes(shape = early_late, colour = early_late), 
-             size = 1,dodge.width = 0.6, cex = 0.7) +
-  geom_beeswarm(data = limitdat, size = 0.75, colour = "lightgrey", cex = 0.7) +
-  geom_errorbar(data = other_data, aes(ymin = decision - ci, ymax = decision + ci),
-                width = 0, size = 2, alpha = 0.85,
-                colour = info_colour) +
-  geom_point(data = other_data, size = 2, shape = 15, colour = "black") +
-  geom_errorbar(aes(colour = early_late, ymin = decision - ci, ymax = decision + ci), 
-                width = 0, size = 2, alpha = 0.85,
+             size = 0.5,dodge.width = 0.6, cex = 0.7) +
+  geom_beeswarm(data = limitdat, shape = exp3_shape, size = 0.5, colour = "lightgrey", cex = 0.7) +
+  geom_point(data = other_data, size = 1, shape = 3, stroke = 1.5, colour = info_colour) +
+  geom_errorbar(data = other_data, aes(ymin = decision - se, ymax = decision + se),
+                width = 0, size = 1, alpha = 0.85,
+                colour = "black") +
+  geom_errorbar(aes(colour = early_late, ymin = decision - se, ymax = decision + se), 
+                width = 0, size = 1.5, alpha = 0.85,
                 position = position_dodge(width = 0.15)) +
   geom_point(aes(shape = early_late), size = 2, colour = "black",
              position = position_dodge2(width = 0.15)) +
-  scale_color_manual(values = colour_blind_friendly) +
-  scale_fill_manual(values = colour_blind_friendly)
+  scale_color_manual(values = colour_blind_friendly, aesthetics = c("colour","fill"))
 
-info_exp3 <- p4 + theme_julian() + ylim(-0.01,1.01) +
+info_exp3_EL <- p4 + theme_julian() + ylim(-0.01,1.01) +
   theme(
     legend.position = c(0.75,0.18),
     legend.background = element_blank(),
     legend.title = element_blank(),
-    legend.key.size = unit(5, "mm"),
+    legend.key.size = unit(6, "mm"),
     legend.text = element_text(size = 12)
   )
 
-## STAKE
-# Compute confidence intervals
-groupdat <- summarySE(
-  data = exp3,
-  measurevar = "decision",
-  groupvars = "stake",
-  na.rm = TRUE,
-  .drop = FALSE
-)
-
-# Summarise data for each individual
-subjdat <- exp3 %>% group_by(subject_num,stake,.drop = TRUE) %>% 
-  dplyr::summarise(decision = mean(decision, na.rm = TRUE))
-
-p5 <- ggplot(data = groupdat, aes(x = stake, y = decision)) + 
-  geom_violin(data = subjdat, fill = stake_colour, size = 0, alpha = 0.15, adjust = 0.9) +
-  geom_beeswarm(data = subjdat, size = 0.5, colour = "lightgrey") +
-  geom_errorbar(aes(ymin = decision - ci, ymax = decision + ci), 
-                width = 0, size = 2, alpha = 0.85,
-                colour = stake_colour) +
-  geom_line(aes(group = "stake"), size = 1, colour = stake_colour, stat = "identity") +
-  geom_point(size = 2, shape = 15, colour = "black")
-
-stake_exp3 <- p5 + theme_julian() + ylim(-0.01,1.01)
-
 # Null interaction of information and stake
 
-groupdat <- summarySE(
-  data = exp3,
+exp3_interaction <- exp3 %>% 
+  group_by(information,stake,subject_num) %>% 
+  summarise(decision = mean(decision, na.rm = TRUE))
+
+groupdat <- summarySEwithin(
+  data = exp3_interaction,
   measurevar = "decision",
-  groupvars = c("information","stake"),
+  idvar = "subject_num",
+  withinvars = c("information","stake"),
   na.rm = TRUE,
   .drop = FALSE
 )
 
-groupdat$ci <- as.character(round(groupdat$ci,digits=2))
-groupdat$ci <- paste("±",groupdat$ci,sep="")
-
-inter_exp3 <- ggplot(groupdat, aes(x = stake, y = information)) + geom_raster(aes(fill = decision)) +
-  scale_fill_gradient(low = "#f7f7f7", high = "#67a9cf", # colorblind/printer friendly
-                      limit = c(0.4,0.9)) +
-  #theme_linedraw() + 
-  geom_text(aes(label = round(decision,digits=2)),colour="grey47",size=3.5) +
-  geom_text(aes(label = ci),colour="grey47",size=2.5,nudge_y=-0.25)+
-  theme(
-    legend.position = "right"
-  ) + xlab("Stake") + ylab("") +
-  labs(fill = "Pr(Accept)") +
-  theme_classic() +
-  scale_shape_manual(values = c(16,1)) +
-  theme(
-    axis.line = element_blank(),
-    panel.border = element_rect(colour = "grey", fill = NA, size = 0.5),
-    axis.ticks = element_line(colour = "grey"),
-    panel.grid = element_blank(),
-    axis.title = element_text(face = "bold", size = 12),
-    axis.text = element_text(face = "plain", size = 12, colour = "black"),
-    legend.position = "right",
-    #legend.justification = c(0.02,0),
-    # legend.margin = margin(0,2,0,2),
-    # legend.box.margin = margin(-10,-10,0,-10),
-    # legend.spacing.y = unit(0.1,"cm"),
-    # legend.spacing.x = unit(0.4,"cm"),
-    # legend.key.height = unit(0.15, "cm"),
-    # legend.key.width = unit(0.8, "cm"),
+width_size = 0.25
+inter_exp3 <- ggplot(groupdat,aes(x = information, y = decision, colour = stake)) +
+  geom_line(aes(group = stake), 
+            position = position_dodge(width = width_size)) +
+  geom_errorbar(aes(ymin = decision-se, ymax = decision+se),
+                width = 0, size = 1.5,
+                position = position_dodge(width = width_size)) +
+  geom_point(position = position_dodge(width = width_size),
+             shape = 22, stroke = 0, fill = "white", size = 1.5, show.legend = FALSE) +
+  labs(colour = "Stake",
+       x = "Informative windows", y = "Pr(Accept)") +
+  scale_y_continuous(limits = c(0.35, 0.95), 
+                     breaks = seq(0.4,0.9,0.1)) +
+  theme_julian() + theme(
     legend.text = element_text(size=10, face = "plain"),
     legend.title = element_text(size=10, face = "bold")
   )
 
-myLegend<-g_legend(inter_exp3)
+inter_exp3 <- inter_exp3 + theme(legend.position = c(0.8,0.2))
 
-inter_exp3 <- inter_exp3 + theme(legend.position = "none")
+# FIGURE 2 ----
 
-# FIGURE 2 & 3 ----
+fig2 <- info_exp1 + ylab("Pr(Accept)") + xlab("Informative windows")  + 
+  ggtitle("Experiment 1") + 
+  theme(plot.title = element_text(size=12,colour="grey", face = "bold", vjust = -0.2))
 
-a <- info_exp1 + ylab("Pr(Accept)") + xlab("Informative windows")  + 
-  ggtitle("Experiment 1") + theme(plot.title = element_text(size=12,colour="black",vjust = -0.2))
+ggsave("figure2-experiment1.png", plot = fig2, width = 7, height = 7)
 
-b <- info_exp2 + ylab("Pr(Accept)") + xlab("Informative windows") +
-  ggtitle("Experiment 2") + theme(plot.title = element_text(size=12,colour="black",vjust = -0.2))
-c <- stake_exp2 + ylab("Pr(Accept)") + xlab("Stake (cents)")  +
-  ggtitle("") + theme(plot.title = element_text(size=12,colour="black",vjust = -0.2))
-supp2 <- inter_exp2 + xlab("Stake (cents)") +
-  ggtitle("Experiment 2") + theme(plot.title = element_text(size=12,colour="black",vjust = -0.2))
+## FIGURE 3 ----
+information_exp2 <- info_exp2 + ylab("Pr(Accept)") + xlab("Informative windows") +
+  ggtitle("Experiment 2") + 
+  theme(plot.title = element_text(size=12,colour="grey", face = "bold", vjust = -0.2))
 
-bottom_row <- plot_grid(b,c, ncol = 2, labels = c("b","c"), 
-                        label_size = 15, label_fontface = "bold", label_fontfamily = "Helvetica")
+interaction_exp2 <- inter_exp2 + ylab(" ") +
+  ggtitle(" ") + 
+  scale_colour_manual(
+    values = c("#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8")) +
+  theme(plot.title = element_text(size=12,colour="black",vjust = -0.2),
+        legend.background = element_blank())
 
-fig2 <- plot_grid(a,bottom_row, ncol = 1, labels = c("a",""), rel_widths = c(1,0.8),
-                  label_size = 15, label_fontface = "bold", label_fontfamily = "Helvetica")
+fig3 <- plot_grid(information_exp2,interaction_exp2, 
+                  ncol = 2, 
+                  labels = c("a)","b)"), label_size = 15, 
+                  label_fontface = "bold", label_fontfamily = "Helvetica")
 
-d <- info_exp3 + ylab("Pr(Accept)") + xlab("Informative windows") +
-  ggtitle("Experiment 3") + theme(plot.title = element_text(size=12,colour="black",vjust = -0.2))
-e <- stake_exp3 + ylab("Pr(Accept)") + xlab("Stake (cents)")
-supp3 <- inter_exp3 + xlab("Stake (cents)") + theme(legend.position = "none") +
-  ggtitle("Experiment 3") + theme(plot.title = element_text(size=12,colour="black",vjust = -0.2))
+ggsave("figure3-experiment2.png", plot = fig3, width = 12, height = 6)
 
-# another_row <- plot_grid(e,f, ncol = 2, rel_widths = c(1,1.3), labels = c("b","c"),
-#                          label_size = 15, label_fontface = "bold", label_fontfamily = "Helvetica")
+## FIGURE 4 ----
 
-fig3 <- plot_grid(d, e, ncol = 1, labels = c("a","b"), rel_heights =  c(1.2,0.8),
-                  label_size = 15, label_fontface = "bold", label_fontfamily = "Helvetica")
+information_exp3 <- info_exp3_EL + ylab("Pr(Accept)") + xlab("Informative windows") +
+  ggtitle("Experiment 3") + 
+  theme(plot.title = element_text(size=12,colour="grey", face = "bold", vjust = -0.2))
 
-ggsave("figure2-experiment1+2.png", plot = fig2, width = 9, height = 8)
-ggsave("figure3-experiment3.png", plot = fig3, width = 9, height = 8)
-# ggsave("figure4-experiment3.png", plot = fig4, width = 9, height = 8)
+interaction_exp3 <- inter_exp3 + ylab("") + 
+  ggtitle("") + 
+  scale_colour_manual(
+    values = c("#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8")) +
+  theme(plot.title = element_text(size=12,colour="black",vjust = -0.2),
+        legend.background = element_blank())
 
-suppfig <- plot_grid(supp2,supp3, myLegend, nrow = 1, labels = c("a","b", ""),
-                     rel_widths = c(8/19,8/19,2/19),
-                     label_size = 15, label_fontface = "bold", label_fontfamily = "Helvetica")
+fig4 <- plot_grid(information_exp3,interaction_exp3, 
+                  ncol = 2, 
+                  labels = c("a)","b)"), label_size = 15, 
+                  label_fontface = "bold", label_fontfamily = "Helvetica")
 
-ggsave("supplementary-figure2-interactions.png", plot=suppfig, width = 9, height = 5)
+ggsave("figure4-experiment3.png", plot = fig4, width = 12, height = 6)
 
-# POOLED INFORMATION PLOT ----
+## FIGURE 5 ----
 
 plot_dat <- alldata
 
+plot_dat_group <- plot_dat %>% 
+  group_by(information,subject_num) %>% 
+  summarise(decision = mean(decision, na.rm = TRUE))
+
 # Compute confidence intervals
-groupdat <- summarySE(
-  data = plot_dat,
+groupdat <- summarySEwithin(
+  data = plot_dat_group,
   measurevar = "decision",
-  groupvars = "information",
+  idvar = "subject_num",
+  withinvars = "information",
   na.rm = TRUE,
   .drop = FALSE
 )
@@ -513,17 +487,57 @@ subjdat <- plot_dat %>% group_by(exp_version,subject_num,information) %>%
 p1 <- ggplot(data = groupdat, aes(x = information, y = decision)) + 
   geom_violin(data = subjdat, fill = info_colour, size = 0, alpha = 0.15, adjust = 0.9) +
   geom_beeswarm(data = subjdat, aes(shape = exp_version), dodge.width = 0.8,
-              size = 1, colour = "lightgrey", priority = "none", cex = 0.8) +
-  geom_errorbar(aes(ymin = decision - ci, ymax = decision + ci), 
-                width = 0, size = 2, alpha = 0.85,
-                colour = info_colour) +
+              size = 0.5, colour = "lightgrey", priority = "none", cex = 0.8) +
   geom_line(aes(group = "information"), size = 1.5, colour = info_colour, stat = "identity") +
-  geom_point(size = 2, shape = 15, colour = "black")
+  geom_errorbar(aes(ymin = decision - se, ymax = decision + se), 
+                width = 0, size = 1, alpha = 0.85,
+                colour = "black")
+  # geom_point(size = 2, shape = 15, colour = "black")
+
+two_three_dat <- alldata %>% filter(exp_version %in% c("Experiment 2", "Experiment 3"))
+
+two_three_group <- two_three_dat %>% 
+  group_by(information,stake,subject_num) %>% 
+  summarise(decision = mean(decision, na.rm = TRUE))
+
+groupdat <- summarySEwithin(
+  data = two_three_group,
+  measurevar = "decision",
+  idvar = "subject_num",
+  withinvars = c("information","stake"),
+  na.rm = TRUE,
+  .drop = FALSE
+)
+
+width_size = 0.25
+inter_all <- ggplot(groupdat,aes(x = information, y = decision, colour = stake)) +
+  geom_line(aes(group = stake),
+            position = position_dodge(width = width_size)) +
+  geom_errorbar(aes(ymin = decision-se, ymax = decision+se),
+                width = 0, size = 1.5,
+                position = position_dodge(width = width_size)) +
+  geom_point(position = position_dodge(width = width_size),
+             shape = 22, stroke = 0, fill = "white", size = 1.5, show.legend = FALSE) +
+  labs(colour = "Stake",
+       x = "Informative windows", y = "Pr(Accept)") +
+  scale_y_continuous(limits = c(0.35, 0.95), 
+                     breaks = seq(0.4,0.9,0.1)) +
+  theme_julian() + theme(
+    legend.text = element_text(size=10, face = "plain"),
+    legend.title = element_text(size=10, face = "bold")
+  )
+
+inter_all <- inter_all + ylab("") + 
+  ggtitle("Experiments 2 and 3") +
+  scale_colour_manual(
+    values = c("#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8")) +
+  theme(plot.title = element_text(size=12,colour="grey", face = "bold", vjust = -0.2),
+        legend.background = element_blank(),
+        legend.position = c(0.8,0.2))
 
 pooled_plot <- p1 + theme_julian() +
-  scale_shape_manual(values = c(2,19,0)) +
+  scale_shape_manual(values = c(exp1_shape,exp2_shape,exp3_shape)) +
   theme(
-    # legend.position = "none",
     legend.position = c(0.75,0.12),
     legend.justification = c(0.02,0),
     legend.margin = margin(0,0,0,0),
@@ -534,7 +548,9 @@ pooled_plot <- p1 + theme_julian() +
   ) + xlab("Informative windows") + ylab("Pr(Accept)") +
   labs(shape = "")
 
-fig4 <- pooled_plot
+fig5 <- plot_grid(pooled_plot, inter_all,
+                  ncol = 2,
+                  labels = c("a)","b)"), label_size = 15, 
+                  label_fontface = "bold", label_fontfamily = "Helvetica")
 
-setwd(fig_location)
-ggsave("figure4-pooled-analysis.png", plot = fig4, width = 8, height = 7)
+ggsave("figure5-pooled-analysis.png", plot = fig5, width = 12, height = 6)

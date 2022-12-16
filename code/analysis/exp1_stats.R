@@ -73,11 +73,6 @@ tests <- emmeans(int_mod, list(pairwise ~ information),
                  adjust = "Holm", type = "response")
 summary(tests)
 
-summarySE(data = behdat,
-          measurevar = "decision",
-          groupvars = "information",
-          na.rm = TRUE)
-
 # None / One        z=-1.218, p=.893
 # None / Two        z=-0.008, p=.993
 # None / Three      z=3.918, p<.001
@@ -93,6 +88,19 @@ summarySE(data = behdat,
 # Three / Four      z=2.769, p=.034
 # Three / Five      z=1.645, p=.500
 # Four / Five       z=-1.132, p=.893
+
+sumdat <- exp1 %>% group_by(information,subject_num) %>% dplyr::summarise(decision=mean(decision,na.rm=TRUE))
+sumdat <- Rmisc::summarySEwithin(data = sumdat, 
+                                 measurevar = "decision",
+                                 idvar = "subject_num",
+                                 withinvars = "information")
+
+# None:   M=.672, SEM=.036
+# One:    M=.642, SEM=.031
+# Two:    M=.671, SEM=.028
+# Three:  M=.765, SEM=.030
+# Four:   M=.825, SEM=.033
+# Five:   M=.801, SEM=.020
 
 # Frequentist tests
 
