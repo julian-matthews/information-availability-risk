@@ -1,13 +1,15 @@
-# The availability of non-instrumental information increases risky decision-making.
+# The availability of non-instrumental information increases risky decision-making
 
 ###### [Julian Matthews](https://twitter.com/quined_quales), [Patrick Cooper](https://twitter.com/neurocoops), [Stefan Bode](https://dlab.unimelb.edu.au/), [Trevor Chong](http://cogneuro.com.au/)
 
 ***
 
-> Many of our decisions involve risk, and these decisions are typically followed by a cascade of events before their outcomes are known. Standard theories predict that an individual’s preference for risk is based primarily on how they estimate the probability and magnitude of reward, and assume that factors unrelated to these estimates are less critical. Here, we asked whether the possibility of receiving information about the intermediate consequences of a decision alters the likelihood of gambling. Our results demonstrated that the availability of such information did indeed modulate the preference for risky behavior, even though it could not possibly have been used to alter future outcomes. This effect was most likely driven by the capacity of information to resolve uncertainty earlier in time. Overall, these results challenge future models of risky decision-making to incorporate parameters other than those associated with the statistical evaluation of the possible outcomes.
+> Contemporary models of decision-making under risk focus on estimating the final value of each alternative course of action. According to such frameworks, information that has no capacity to alter a future payoff (i.e., is _non-instrumental_) should have little effect on one’s preference for risk. Importantly, however, recent work has shown that information, despite being non-instrumental, may nevertheless exert a striking influence on behaviour. Here, we tested whether the opportunity to passively observe the sequence of events following a decision could modulate risky behaviour, even if that information could not possibly influence the final result. Across three experiments, 71 individuals chose to accept or reject gambles on a five-window slot machine. If a gamble was accepted, each window was sequentially revealed prior to the outcome being declared. Critically, we informed participants about which windows would subsequently provide veridical information about the gamble outcome, should that gamble be accepted. Our analyses revealed three key findings. First, the opportunity to observe the consequences of one’s choice significantly increased the likelihood of gambling, despite that information being entirely non-instrumental. Second, this effect generalised across different stakes. Finally, choices were driven by the likelihood that the available information could result in an earlier resolution of uncertainty. These findings demonstrate the capacity of non-instrumental information to modulate economic decisions through its anticipatory utility. More broadly, our results provide a strong test of current decision-making frameworks, by demonstrating that information that is entirely orthogonal to the value of the final outcome can have substantial effects on risky behaviour.
 
 ## What is this?
-Here we provide **[R code](./code/)** and **[complete trial-by-trial data](./data/)** supporting our study of non-instrumental information availability and risky decision-making. 
+Here we provide **[R code](./code/analysis/)** and **[complete trial-by-trial data](./data/)** supporting our study of non-instrumental information availability and risky decision-making. 
+
+The **[MATLAB code](./code/experiment/)** used to conduct each experiment has also been made available under a GNUv3.0 license. Each experiment can be initiated using its `runExp_` function. Supporting functions, images, and audio are included in the `addons` folder.
 
 We used a **five-window slot machine with fixed odds** (50% chance of winning) to study how the opportunity to observe non-instrumental information about outcomes influences decisions to gamble. Critically, we informed participants about which slots would subsequently provide veridical information about the gamble outcome. 
 
@@ -17,9 +19,9 @@ We used a **five-window slot machine with fixed odds** (50% chance of winning) t
 
 Across three experiments (n=71), we found that information availability has a striking affect on behaviour; **the opportunity to receive non-instrumental information increases the propensity to gamble**. 
 
-However, information availability does not drive behaviour in a simple, linear fashion. We used computational modeling to demonstrate that choices were likely driven by anticipatory utility. When information might provide a definitive outcome, participants were more inclined to gamble. However, when only partial information was available, participants were more inclined to reject the gamble. In fact, participants were less likely to accept gambles with partial information than a condition where no information was available at all, an effect that can be interpreted as **information avoidance**.
+However, information availability does not drive behaviour in a simple, linear fashion. We used computational modeling to demonstrate that decision-making was strongly influenced by anticipatory utility. When information might provide a definitive outcome, participants were more inclined to gamble. However, when only partial information was available, participants were more inclined to reject the gamble. In fact, participants were less likely to accept gambles with partial information than a condition where no information was available at all, an effect that can be interpreted as **information avoidance**.
 
-> The following plot illustrates the proportion of gambles accepted (**Pr(Accept)**) as a function of non-instrumental information availability (**Informative windows**). Group means for each information condition are plotted as black squares. Errorbars reflect 95% confidence intervals. Individual subject means are plotted in grey for each information condition and experiment. 
+> The following plot illustrates the proportion of gambles accepted (**Pr(Accept)**) as a function of non-instrumental information availability (**Informative windows**). Group means for each information condition are plotted in black. Errorbars reflect within-subject standard error of the mean. Individual subject means are plotted in grey for each information condition and experiment. 
 
 ![results]
 
@@ -27,6 +29,7 @@ However, information availability does not drive behaviour in a simple, linear f
 
 ## You will need: 
 1. [**R**](https://www.r-project.org/)
+2. [**MATLAB**](https://au.mathworks.com/products/matlab.html) and [**Psychtoolbox**](http://psychtoolbox.org/)
 
 ## Code description
 * [`exp1_stats.R`](./code/exp1_stats.R): statistics for Experiment 1
