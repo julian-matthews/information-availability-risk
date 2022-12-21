@@ -44,7 +44,7 @@ However, information availability does not drive behaviour in a simple, linear f
 ### Behavioural data
 Behavioural datasets (.csv files) are arranged in a systematic manner to aid analysis:
 1. `exp_version`: the experiment in our study; EXP1, EXP2, or EXP3
-2. `subject_num`: the unique ID for each of 71 participant across our experiments
+2. `subject_num`: the unique ID for each of 71 participants across our experiments
 3. `trial_num`: the trial number from 1 to 180
 4. `information`: non-instrumental information availability, reflected in the number of slots with veridical information from 0 to 5
 5. `stake`: the amount of money that can be won or lost on the trial. Fixed at 50 cents for EXP1. Varies from 10 to 50 cents (in 10 cent increments) for EXP2 and EXP3.
