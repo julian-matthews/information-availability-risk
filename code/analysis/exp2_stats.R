@@ -7,9 +7,6 @@ library(lmerTest)
 library(multcomp)
 library(optimx)
 library(emmeans)
-library(ez)
-library(BayesFactor)
-library(bayestestR)
 library(dplyr)
 
 # Load the data and preprocess ----
@@ -148,58 +145,3 @@ sumdat <- Rmisc::summarySEwithin(data = sumdat,
 # 30 cents:   M=.640, SEM=.026
 # 40 cents:   M=.555, SEM=.040
 # 50 cents:   M=.606, SEM=.042
-
-# Frequentist tests
-
-behdat <- exp2
-
-behdat$subject_num <- factor(behdat$subject_num)
-subjdat <- behdat %>% group_by(subject_num,information,stake) %>% 
-  dplyr::summarise(decision = mean(decision,na.rm = TRUE))
-
-# Balanced design
-table(subjdat$information,subjdat$stake)
-
-# Perform frequentist repeated measures ANOVA
-rm_anova <- ezANOVA(data = subjdat,
-                    dv = decision,
-                    wid = subject_num,
-                    within = .(information,stake),
-                    return_aov = TRUE,
-                    type = 2)
-
-rm_anova$ANOVA
-
-# Included pps only
-# information         F(5,140)=19.870, p<.001, ges=.110
-# stake               F(4,112)=4.714, p=.001, ges=.069
-# information:stake   F(20,560)=1.608, p=.046, ges=.013
-
-# Everybody
-# information         F(5,160)=17.621, p<.001, ges=.084
-# stake               F(4,128)=4.465, p=.002, ges=.051
-# information:stake   F(20,640)=1.603, p=.046, ges=.009
-
-bf <- anovaBF(
-  data = subjdat,
-  formula = decision ~ information * stake + subject_num,
-  whichRandom = "subject_num", 
-  rscaleFixed = "wide", 
-  rscaleRandom = "nuisance", 
-  method = "auto", # tries all methods and settles on smallest error
-  iterations = 1000000, # minimise error
-  progress = TRUE
-)
-
-options(scipen = 0)
-bayesfactor_inclusion(models = bf, match_models = TRUE)
-
-# Included pps only
-# information         BF=6.609 x 10^19
-# stake               BF=1.815 x 10^11
-# information:stake   BF=4.122 x 10^-5
-
-# Everybody
-# information         BF=3.13 x 10^18
-# stake               BF=1.37 x 10^10
-# information:stake   BF=2.18 x 10^-5

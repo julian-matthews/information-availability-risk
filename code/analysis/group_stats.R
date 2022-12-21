@@ -7,9 +7,6 @@ library(lmerTest)
 library(multcomp)
 library(optimx)
 library(emmeans)
-library(ez)
-library(BayesFactor)
-library(bayestestR)
 library(dplyr)
 
 # Load the data and preprocess ----
@@ -100,47 +97,6 @@ sumdat <- Rmisc::summarySEwithin(data = sumdat,
 # Four:   M=.802, SEM=.015
 # Five:   M=.803, SEM=.014
 
-# Frequentist tests
-
-behdat <- alldata
-
-subjdat <- behdat %>% group_by(subject_num,information) %>% 
-  dplyr::summarise(decision = mean(decision,na.rm = TRUE))
-
-# Balanced design
-table(subjdat$information)
-
-# Perform frequentist repeated measures ANOVA
-rm_anova <- ezANOVA(data = subjdat,
-                    dv = decision,
-                    wid = subject_num,
-                    within = information,
-                    return_aov = TRUE,
-                    type = 2)
-
-rm_anova$ANOVA
-
-# pairwise.t.test(subjdat$decision, subjdat$information,
-#                 paired=T, p.adjust.method="holm")
-
-# information   F(5,350)=39.689, p<.001, ges=.223
-
-bf <- anovaBF(
-  data = subjdat,
-  formula = decision ~ information + subject_num,
-  whichRandom = "subject_num", 
-  rscaleFixed = "wide", 
-  rscaleRandom = "nuisance", 
-  method = "auto", # tries all methods and settles on smallest error
-  iterations = 1000000, # minimise error
-  progress = TRUE
-)
-
-options(scipen = 0)
-print(bf)
-
-# information   BF=1.519 x 10^29
-
 ## INFO AND STAKE ----
 
 alldata <- read.csv(file = 'all_experiments.csv', na.strings = NA)
@@ -226,55 +182,3 @@ sumdat <- Rmisc::summarySEwithin(data = sumdat,
 # 30 cents:   M=.646, SEM=.018
 # 40 cents:   M=.599, SEM=.029
 # 50 cents:   M=.630, SEM=.031
-
-# Frequentist tests
-
-behdat <- alldata
-
-behdat <- behdat %>% filter(exp_version %in% c("EXP2","EXP3"))
-behdat$subject_num <- factor(behdat$subject_num,)
-subjdat <- behdat %>% group_by(subject_num,information,stake) %>% 
-  dplyr::summarise(decision = mean(decision,na.rm = TRUE))
-
-# Balanced design?
-table(subjdat$information,subjdat$stake)
-
-# Perform frequentist repeated measures ANOVA
-rm_anova <- ezANOVA(data = subjdat,
-                    dv = decision,
-                    wid = subject_num,
-                    within = .(information,stake),
-                    return_aov = TRUE,
-                    type = 2)
-
-rm_anova$ANOVA
-
-# all exps <- NOT POSSIBLE DUE TO UNBALANCED STAKE
-
-# exp2+3
-# information   F(5,240)=35.634, p<.001, ges=.118
-# stake         F(4,192)=4.799, p=.001, ges=.041
-# info:stake    F(20,960)=2.216, p=.002, ges=.010
-
-bf <- anovaBF(
-  data = subjdat,
-  formula = decision ~ information * stake + subject_num,
-  whichRandom = "subject_num", 
-  rscaleFixed = "wide", 
-  rscaleRandom = "nuisance", 
-  method = "auto", # tries all methods and settles on smallest error
-  iterations = 100000, # minimise error
-  progress = TRUE
-)
-
-bayesfactor_inclusion(bf)
-
-# all exps
-# information   BF=2.17 x 10^43
-# stake         BF=5.36 x 10^10
-# info:stake    BF=1.00 x 10^-4
-
-# exp2+3
-# information   BF=3.14 x 10^39
-# stake         BF=5.68 x 10^10
-# info:stake    BF=7.01 x 10^-5

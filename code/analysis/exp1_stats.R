@@ -7,9 +7,6 @@ library(lmerTest)
 library(multcomp)
 library(optimx)
 library(emmeans)
-library(ez)
-library(BayesFactor)
-library(bayestestR)
 library(dplyr)
 library(Rmisc)
 
@@ -101,42 +98,3 @@ sumdat <- Rmisc::summarySEwithin(data = sumdat,
 # Three:  M=.765, SEM=.030
 # Four:   M=.825, SEM=.033
 # Five:   M=.801, SEM=.020
-
-# Frequentist tests
-
-behdat <- exp1
-
-subjdat <- behdat %>% group_by(subject_num,information) %>% 
-  dplyr::summarise(decision = mean(decision,na.rm = TRUE))
-
-# Balanced design
-table(subjdat$information)
-
-# Perform frequentist repeated measures ANOVA
-rm_anova <- ezANOVA(data = subjdat,
-                    dv = decision,
-                    wid = subject_num,
-                    within = information,
-                    return_aov = TRUE,
-                    type = 2)
-
-rm_anova$ANOVA
-
-# information   F(5,105)=6.570, p<.001, ges=.138
-
-bf <- anovaBF(
-  data = subjdat,
-  formula = decision ~ information + subject_num,
-  whichRandom = "subject_num", 
-  rscaleFixed = "wide", 
-  rscaleRandom = "nuisance", 
-  method = "auto", # tries all methods and settles on smallest error
-  iterations = 1000000, # minimise error
-  progress = TRUE
-)
-
-options(scipen = 0)
-print(bf)
-
-# information   BF=867.09
-
