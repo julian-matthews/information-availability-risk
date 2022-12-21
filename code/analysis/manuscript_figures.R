@@ -536,8 +536,10 @@ inter_all <- inter_all + ylab("") +
         legend.position = c(0.8,0.2))
 
 pooled_plot <- p1 + theme_julian() +
+  ggtitle("Experiments 1 to 3") +
   scale_shape_manual(values = c(exp1_shape,exp2_shape,exp3_shape)) +
   theme(
+    plot.title = element_text(size=12,colour="grey", face = "bold", vjust = -0.2),	
     legend.position = c(0.75,0.12),
     legend.justification = c(0.02,0),
     legend.margin = margin(0,0,0,0),
